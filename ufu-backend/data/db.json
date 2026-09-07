@@ -1,0 +1,41 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "تیشرت UFU",
+      "price": "۴۹۹,۰۰۰",
+      "category": "تیشرت",
+      "badge": "",
+      "image": "https://i.ibb.co/23h31f0W/Polish.png"
+    },
+    {
+      "id": "2",
+      "name": "هودی UFU",
+      "price": "۸۹۹,۰۰۰",
+      "category": "هودی",
+      "badge": "",
+      "image": "https://i.ibb.co/mFM9nMjN/8eb6ed23-59e6-49c9-b44b-ec4cd64e3dc8.jpg"
+    },
+    {
+      "id": "3",
+      "name": "شلوار UFU",
+      "price": "۷۴۹,۰۰۰",
+      "category": "شلوار",
+      "badge": "",
+      "image": "https://i.ibb.co/xt6JRSC1/b5f285fd-b79b-4382-a73a-2162348c69e4.jpg"
+    },
+    {
+      "id": "4",
+      "name": "کلاه UFU",
+      "price": "۳۴۹,۰۰۰",
+      "category": "کلاه",
+      "badge": "",
+      "image": "https://i.ibb.co/8L427VzG/fe778884-7988-4d51-95d6-838bab92841f.jpg"
+    }
+  ],
+  "config": {
+    "siteTitle": "UFU | جامه، روایت توست",
+    "heroImage": "https://i.ibb.co/JRpyCFwK/Polish.png",
+    "footerText": "UFU © تمامی حقوق محفوظ است"
+  }
+}

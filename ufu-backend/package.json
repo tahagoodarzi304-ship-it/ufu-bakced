@@ -1,0 +1,13 @@
+{
+  "name": "ufu-store-backend",
+  "version": "1.0.0",
+  "description": "بک‌اند فروشگاه UFU - متصل به Supabase Postgres",
+  "main": "server.js",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "pg": "^8.13.1"
+  }
+}

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پنل مدیریت UFU</title>
+<style>
+  :root {
+    --cream: #F4ECDD;
+    --paper: #FBF7EE;
+    --red: #A6201F;
+    --red-dark: #7C1616;
+    --ink: #211C17;
+    --ink-soft: #6B6156;
+    --line: #E2D5BC;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', Tahoma, sans-serif; }
+  body { background: var(--cream); color: var(--ink); min-height: 100vh; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 20px; }
+
+  /* ---------- ورود ---------- */
+  #loginScreen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .login-box { background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 32px 26px; max-width: 360px; width: 100%; text-align: center; box-shadow: 0 14px 30px -18px rgba(33,28,23,.35); }
+  .login-box h1 { font-size: 20px; margin-bottom: 6px; }
+  .login-box p { color: var(--ink-soft); font-size: 13px; margin-bottom: 20px; }
+
+  input, select, textarea {
+    width: 100%; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: 10px;
+    font-size: 14px; background: #fff; color: var(--ink); font-family: inherit;
+  }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--red); }
+
+  button { cursor: pointer; border: none; border-radius: 10px; font-size: 14px; font-family: inherit; }
+  .btn-primary { background: var(--red); color: #fff; padding: 12px 20px; width: 100%; font-weight: 600; }
+  .btn-primary:hover { background: var(--red-dark); }
+  .error-msg { color: var(--red); font-size: 13px; margin-top: 10px; min-height: 18px; }
+
+  /* ---------- هدر پنل ---------- */
+  header.topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  header.topbar h1 { font-size: 19px; }
+  header.topbar .actions { display: flex; gap: 8px; }
+  .btn-ghost { background: transparent; border: 1.5px solid var(--line); padding: 8px 14px; border-radius: 10px; color: var(--ink); font-size: 13px; }
+  .btn-ghost:hover { border-color: var(--red); color: var(--red); }
+
+  /* ---------- تب‌ها ---------- */
+  .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+  .tab-btn { flex: 1; background: var(--paper); border: 1.5px solid var(--line); padding: 10px; border-radius: 12px; color: var(--ink-soft); font-weight: 600; }
+  .tab-btn.active { background: var(--red); border-color: var(--red); color: #fff; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ---------- کارت‌ها ---------- */
+  .card { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin-bottom: 16px; }
+  .card h2 { font-size: 15px; margin-bottom: 14px; }
+  .field { margin-bottom: 12px; }
+  .field label { display: block; font-size: 12.5px; color: var(--ink-soft); margin-bottom: 6px; font-weight: 600; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  .toast { position: fixed; bottom: 20px; right: 50%; transform: translateX(50%); background: var(--ink); color: #fff; padding: 12px 18px; border-radius: 10px; font-size: 13px; opacity: 0; pointer-events: none; transition: opacity .25s, bottom .25s; z-index: 50; }
+  .toast.show { opacity: 1; bottom: 30px; }
+
+  /* ---------- لیست محصولات ---------- */
+  .product-row-admin { display: flex; align-items: center; gap: 12px; border: 1px solid var(--line); border-radius: 12px; padding: 10px; margin-bottom: 10px; background: #fff; }
+  .product-row-admin img { width: 56px; height: 56px; object-fit: cover; border-radius: 8px; flex-shrink: 0; background: var(--cream); }
+  .product-row-admin .info { flex: 1; min-width: 0; }
+  .product-row-admin .info .name { font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .product-row-admin .info .meta { font-size: 12px; color: var(--ink-soft); }
+  .product-row-admin .btns { display: flex; gap: 6px; }
+  .icon-btn { width: 34px; height: 34px; border-radius: 8px; background: var(--cream); font-size: 15px; display: flex; align-items: center; justify-content: center; }
+  .icon-btn.danger:hover { background: #f6d9d9; }
+  .empty-msg { text-align: center; color: var(--ink-soft); font-size: 13px; padding: 20px 0; }
+</style>
+</head>
+<body>
+
+  <!-- ================= صفحه ورود ================= -->
+  <div id="loginScreen">
+    <div class="login-box">
+      <h1>🛍️ پنل مدیریت UFU</h1>
+      <p>برای مدیریت زنده‌ی محصولات و سایت وارد شوید</p>
+      <div class="field">
+        <input type="password" id="passwordInput" placeholder="رمز عبور ادمین" onkeydown="if(event.key==='Enter') login()">
+      </div>
+      <button class="btn-primary" onclick="login()">ورود</button>
+      <div class="error-msg" id="loginError"></div>
+    </div>
+  </div>
+
+  <!-- ================= پنل اصلی ================= -->
+  <div class="wrap" id="adminScreen" style="display:none;">
+    <header class="topbar">
+      <h1>🛍️ پنل مدیریت UFU</h1>
+      <div class="actions">
+        <a class="btn-ghost" href="/" target="_blank" style="text-decoration:none;display:inline-block;">مشاهده سایت</a>
+        <button class="btn-ghost" onclick="logout()">خروج</button>
+      </div>
+    </header>
+
+    <div class="tabs">
+      <button class="tab-btn active" id="tabBtnProducts" onclick="showTab('products')">محصولات</button>
+      <button class="tab-btn" id="tabBtnSettings" onclick="showTab('settings')">تنظیمات سایت</button>
+    </div>
+
+    <!-- ---------- تب محصولات ---------- -->
+    <div class="panel active" id="panelProducts">
+      <div class="card">
+        <h2 id="formTitle">➕ افزودن محصول جدید</h2>
+        <input type="hidden" id="editingId">
+        <div class="field">
+          <label>نام محصول</label>
+          <input type="text" id="prodName" placeholder="مثلاً: تیشرت UFU">
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label>قیمت (تومان)</label>
+            <input type="text" id="prodPrice" placeholder="مثلاً: 499,000">
+          </div>
+          <div class="field">
+            <label>دسته‌بندی</label>
+            <select id="prodCategory">
+              <option value="تیشرت">تیشرت</option>
+              <option value="هودی">هودی</option>
+              <option value="کلاه">کلاه</option>
+              <option value="شلوار">شلوار</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>برچسب (اختیاری)</label>
+          <select id="prodBadge">
+            <option value="">بدون برچسب</option>
+            <option value="new">جدید</option>
+            <option value="sale">حراج</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>لینک عکس (از ibb.co)</label>
+          <input type="text" id="prodImage" placeholder="https://i.ibb.co/...">
+        </div>
+        <button class="btn-primary" id="submitBtn" onclick="submitProduct()">افزودن محصول</button>
+      </div>
+
+      <div class="card">
+        <h2>لیست محصولات (<span id="productCount">0</span>)</h2>
+        <div id="productList"></div>
+      </div>
+    </div>
+
+    <!-- ---------- تب تنظیمات سایت ---------- -->
+    <div class="panel" id="panelSettings">
+      <div class="card">
+        <h2>ظاهر و متن سایت</h2>
+        <div class="field">
+          <label>عنوان سایت (تب مرورگر)</label>
+          <input type="text" id="cfgSiteTitle" placeholder="UFU | جامه، روایت توست">
+        </div>
+        <div class="field">
+          <label>لینک عکس بنر اصلی (هیرو)</label>
+          <input type="text" id="cfgHeroImage" placeholder="https://i.ibb.co/...">
+        </div>
+        <div class="field">
+          <label>متن فوتر سایت</label>
+          <input type="text" id="cfgFooterText" placeholder="UFU © تمامی حقوق محفوظ است">
+        </div>
+        <button class="btn-primary" onclick="saveConfig()">ذخیره تنظیمات</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  let TOKEN = localStorage.getItem('ufu_admin_token') || '';
+  let PRODUCTS = [];
+
+  // ---------- ورود / خروج ----------
+  async function login() {
+    const password = document.getElementById('passwordInput').value;
+    const errBox = document.getElementById('loginError');
+    errBox.textContent = '';
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        errBox.textContent = data.error || 'ورود ناموفق بود';
+        return;
+      }
+      TOKEN = data.token;
+      localStorage.setItem('ufu_admin_token', TOKEN);
+      enterAdmin();
+    } catch (e) {
+      errBox.textContent = 'اتصال به سرور برقرار نشد';
+    }
+  }
+
+  function logout() {
+    localStorage.removeItem('ufu_admin_token');
+    TOKEN = '';
+    document.getElementById('adminScreen').style.display = 'none';
+    document.getElementById('loginScreen').style.display = 'flex';
+  }
+
+  function enterAdmin() {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminScreen').style.display = 'block';
+    loadEverything();
+  }
+
+  async function authedFetch(url, options = {}) {
+    options.headers = Object.assign({}, options.headers, {
+      'Authorization': 'Bearer ' + TOKEN,
+      'Content-Type': 'application/json'
+    });
+    const res = await fetch(url, options);
+    if (res.status === 401) {
+      logout();
+      throw new Error('نشست شما منقضی شده، دوباره وارد شوید');
+    }
+    return res;
+  }
+
+  // ---------- تب‌ها ----------
+  function showTab(name) {
+    document.getElementById('panelProducts').classList.toggle('active', name === 'products');
+    document.getElementById('panelSettings').classList.toggle('active', name === 'settings');
+    document.getElementById('tabBtnProducts').classList.toggle('active', name === 'products');
+    document.getElementById('tabBtnSettings').classList.toggle('active', name === 'settings');
+  }
+
+  // ---------- بارگذاری اولیه ----------
+  async function loadEverything() {
+    try {
+      const res = await fetch('/api/site');
+      const data = await res.json();
+      PRODUCTS = data.products || [];
+      renderProductList();
+      const cfg = data.config || {};
+      document.getElementById('cfgSiteTitle').value = cfg.siteTitle || '';
+      document.getElementById('cfgHeroImage').value = cfg.heroImage || '';
+      document.getElementById('cfgFooterText').value = cfg.footerText || '';
+    } catch (e) {
+      showToast('خطا در دریافت اطلاعات از سرور');
+    }
+  }
+
+  // ---------- محصولات ----------
+  function renderProductList() {
+    const list = document.getElementById('productList');
+    document.getElementById('productCount').textContent = PRODUCTS.length;
+    if (!PRODUCTS.length) {
+      list.innerHTML = '<div class="empty-msg">هنوز محصولی اضافه نشده است</div>';
+      return;
+    }
+    list.innerHTML = PRODUCTS.map(function (p) {
+      return (
+        '<div class="product-row-admin">' +
+          '<img src="' + (p.image || '') + '" alt="">' +
+          '<div class="info">' +
+            '<div class="name">' + p.name + (p.badge ? ' · ' + (p.badge === 'new' ? 'جدید' : 'حراج') : '') + '</div>' +
+            '<div class="meta">' + p.price + ' تومان · ' + p.category + '</div>' +
+          '</div>' +
+          '<div class="btns">' +
+            '<button class="icon-btn" onclick="editProduct(\'' + p.id + '\')">✏️</button>' +
+            '<button class="icon-btn danger" onclick="removeProduct(\'' + p.id + '\')">🗑️</button>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  function clearForm() {
+    document.getElementById('editingId').value = '';
+    document.getElementById('prodName').value = '';
+    document.getElementById('prodPrice').value = '';
+    document.getElementById('prodImage').value = '';
+    document.getElementById('prodBadge').value = '';
+    document.getElementById('prodCategory').value = 'تیشرت';
+    document.getElementById('formTitle').textContent = '➕ افزودن محصول جدید';
+    document.getElementById('submitBtn').textContent = 'افزودن محصول';
+  }
+
+  function editProduct(id) {
+    const p = PRODUCTS.find(function (x) { return x.id === id; });
+    if (!p) return;
+    document.getElementById('editingId').value = p.id;
+    document.getElementById('prodName').value = p.name;
+    document.getElementById('prodPrice').value = p.price;
+    document.getElementById('prodCategory').value = p.category;
+    document.getElementById('prodBadge').value = p.badge || '';
+    document.getElementById('prodImage').value = p.image;
+    document.getElementById('formTitle').textContent = '✏️ ویرایش محصول';
+    document.getElementById('submitBtn').textContent = 'ذخیره تغییرات';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  async function submitProduct() {
+    const id = document.getElementById('editingId').value;
+    const name = document.getElementById('prodName').value.trim();
+    const price = document.getElementById('prodPrice').value.trim();
+    const category = document.getElementById('prodCategory').value;
+    const badge = document.getElementById('prodBadge').value;
+    const image = document.getElementById('prodImage').value.trim();
+
+    if (!name || !price || !image) {
+      showToast('لطفاً نام، قیمت و لینک عکس را پر کنید');
+      return;
+    }
+
+    try {
+      if (id) {
+        const res = await authedFetch('/api/admin/products/' + id, {
+          method: 'PUT',
+          body: JSON.stringify({ name, price, category, badge, image })
+        });
+        const updated = await res.json();
+        const idx = PRODUCTS.findIndex(function (p) { return p.id === id; });
+        if (idx !== -1) PRODUCTS[idx] = updated;
+        showToast('✅ محصول ویرایش شد');
+      } else {
+        const res = await authedFetch('/api/admin/products', {
+          method: 'POST',
+          body: JSON.stringify({ name, price, category, badge, image })
+        });
+        const created = await res.json();
+        PRODUCTS.push(created);
+        showToast('✅ محصول اضافه شد و همین الان روی سایت فعال است');
+      }
+      renderProductList();
+      clearForm();
+    } catch (e) {
+      showToast(e.message || 'خطا در ذخیره‌سازی');
+    }
+  }
+
+  async function removeProduct(id) {
+    if (!confirm('این محصول حذف شود؟')) return;
+    try {
+      await authedFetch('/api/admin/products/' + id, { method: 'DELETE' });
+      PRODUCTS = PRODUCTS.filter(function (p) { return p.id !== id; });
+      renderProductList();
+      showToast('🗑️ محصول حذف شد');
+    } catch (e) {
+      showToast(e.message || 'خطا در حذف محصول');
+    }
+  }
+
+  // ---------- تنظیمات سایت ----------
+  async function saveConfig() {
+    const siteTitle = document.getElementById('cfgSiteTitle').value.trim();
+    const heroImage = document.getElementById('cfgHeroImage').value.trim();
+    const footerText = document.getElementById('cfgFooterText').value.trim();
+    try {
+      await authedFetch('/api/admin/config', {
+        method: 'PUT',
+        body: JSON.stringify({ siteTitle, heroImage, footerText })
+      });
+      showToast('✅ تنظیمات سایت ذخیره شد');
+    } catch (e) {
+      showToast(e.message || 'خطا در ذخیره تنظیمات');
+    }
+  }
+
+  // ---------- toast ----------
+  let toastTimer;
+  function showToast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.classList.remove('show'); }, 2600);
+  }
+
+  // ---------- شروع ----------
+  if (TOKEN) {
+    enterAdmin();
+  }
+</script>
+</body>
+</html>

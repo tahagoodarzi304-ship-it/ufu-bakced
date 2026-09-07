@@ -1,317 +1,720 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>پنل مدیریت UFU</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Tahoma, sans-serif; }
-    body { background: #f5f5f5; padding: 20px; }
-    .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    h1 { color: #8B0000; margin-bottom: 30px; text-align: center; }
-    .form-group { margin-bottom: 20px; }
-    label { display: block; margin-bottom: 8px; font-weight: bold; color: #333; }
-    input, select, textarea { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 5px; font-size: 14px; }
-    input:focus, select:focus, textarea:focus { outline: none; border-color: #8B0000; }
-    button { background: #8B0000; color: white; padding: 12px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; width: 100%; margin-top: 10px; }
-    button:hover { background: #6B0000; }
-    .output { margin-top: 30px; padding: 20px; background: #f9f9f9; border: 2px dashed #8B0000; border-radius: 5px; }
-    .output h3 { margin-bottom: 10px; color: #8B0000; }
-    .code-box { background: #2d2d2d; color: #fff; padding: 15px; border-radius: 5px; overflow-x: auto; direction: ltr; text-align: left; font-family: monospace; font-size: 13px; }
-    .copy-btn { background: #28a745; margin-top: 10px; }
-    .copy-btn:hover { background: #218838; }
-    .preview { margin-top: 20px; padding: 20px; background: white; border: 1px solid #ddd; border-radius: 5px; }
-    .product-preview { display: inline-block; margin: 10px; text-align: center; }
-    .product-preview img { width: 200px; height: 200px; object-fit: cover; border-radius: 10px; }
-    .product-preview h4 { margin: 10px 0 5px; }
-    .product-preview p { color: #8B0000; font-weight: bold; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل مدیریت UFU</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Tahoma, sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #8B0000;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #8B0000;
+        }
+
+        button {
+            background: #8B0000;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #6B0000;
+        }
+
+        .output {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border: 2px dashed #8B0000;
+            border-radius: 5px;
+        }
+
+        .output h3 {
+            margin-bottom: 10px;
+            color: #8B0000;
+        }
+
+        .code-box {
+            background: #2d2d2d;
+            color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            direction: ltr;
+            text-align: left;
+            font-family: monospace;
+            font-size: 13px;
+        }
+
+        .copy-btn {
+            background: #28a745;
+            margin-top: 10px;
+        }
+
+        .copy-btn:hover {
+            background: #218838;
+        }
+
+        .preview {
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .product-preview {
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+        }
+
+        .product-preview img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .product-preview h4 {
+            margin: 10px 0 5px;
+        }
+
+        .product-preview p {
+            color: #8B0000;
+            font-weight: bold;
+        }
 
 
-    <!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>پنل مدیریت UFU - پیشرفته</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
-    body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
-    .admin-container { max-width: 1200px; margin: 0 auto; }
-    .admin-header { background: white; padding: 20px 30px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-    .admin-header h1 { color: #667eea; font-size: 28px; }
-    .admin-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-    .tab-btn { background: rgba(255,255,255,0.2); color: white; border: none; padding: 12px 25px; border-radius: 10px; cursor: pointer; font-size: 15px; transition: all 0.3s; }
-    .tab-btn:hover, .tab-btn.active { background: white; color: #667eea; transform: translateY(-2px); }
-    .admin-panel { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: none; }
-    .admin-panel.active { display: block; animation: fadeIn 0.5s; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .form-section { margin-bottom: 30px; padding-bottom: 30px; border-bottom: 2px solid #f0f0f0; }
-    .form-section h2 { color: #333; margin-bottom: 20px; font-size: 22px; }
-    .form-group { margin-bottom: 20px; }
-    .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #555; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; transition: all 0.3s; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.1); }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .btn { padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: 600; transition: all 0.3s; }
-    .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
-    .btn-success { background: #10b981; color: white; }
-    .btn-success:hover { background: #059669; }
-    .btn-danger { background: #ef4444; color: white; }
-    .btn-danger:hover { background: #dc2626; }
-    .btn-warning { background: #f59e0b; color: white; }
-    .btn-warning:hover { background: #d97706; }
-    .product-list { display: grid; gap: 15px; margin-top: 20px; }
-    .product-item { background: #f9f9f9; padding: 15px; border-radius: 10px; display: flex; align-items: center; gap: 15px; border: 2px solid #e0e0e0; }
-    .product-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; }
-    .product-item-info { flex: 1; }
-    .product-item-info h4 { color: #333; margin-bottom: 5px; }
-    .product-item-info p { color: #667eea; font-weight: bold; }
-    .product-actions { display: flex; gap: 10px; }
-    .color-picker { width: 60px; height: 40px; border: none; cursor: pointer; }
-    .preview-box { background: #f5f5f5; padding: 20px; border-radius: 10px; margin-top: 20px; }
-    .alert { padding: 15px; border-radius: 8px; margin-bottom: 20px; display: none; }
-    .alert-success { background: #d1fae5; color: #065f46; border: 1px solid #10b981; }
-    .alert-info { background: #dbeafe; color: #1e40af; border: 1px solid #3b82f6; }
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
-    .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; text-align: center; }
-    .stat-card h3 { font-size: 36px; margin-bottom: 5px; }
-    .stat-card p { opacity: 0.9; }
-    .file-upload { position: relative; overflow: hidden; display: inline-block; }
-    .file-upload input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-    .upload-btn { background: #667eea; color: white; padding: 10px 20px; border-radius: 8px; display: inline-block; cursor: pointer; }
-    .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
-    .badge-new { background: #10b981; color: white; }
-    .badge-sale { background: #ef4444; color: white; }
-    textarea { min-height: 100px; resize: vertical; }
-    .code-output { background: #2d2d2d; color: #fff; padding: 15px; border-radius: 8px; overflow-x: auto; direction: ltr; text-align: left; font-family: 'Courier New', monospace; margin-top: 15px; }
-    @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } .product-item { flex-direction: column; text-align: center; } }
-  </style>
+        < !DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>پنل مدیریت UFU - پیشرفته</title><style>* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .admin-header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .admin-header h1 {
+            color: #667eea;
+            font-size: 28px;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover,
+        .tab-btn.active {
+            background: white;
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .admin-panel {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .admin-panel.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .form-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #d97706;
+        }
+
+        .product-list {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .product-item {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .product-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .product-item-info {
+            flex: 1;
+        }
+
+        .product-item-info h4 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .product-item-info p {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .color-picker {
+            width: 60px;
+            height: 40px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .preview-box {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #3b82f6;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 36px;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            opacity: 0.9;
+        }
+
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-upload input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .upload-btn {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-new {
+            background: #10b981;
+            color: white;
+        }
+
+        .badge-sale {
+            background: #ef4444;
+            color: white;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .code-output {
+            background: #2d2d2d;
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            direction: ltr;
+            text-align: left;
+            font-family: 'Courier New', monospace;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .product-item {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <div class="admin-container">
-    <div class="admin-header">
-      <h1>🎨 پنل مدیریت پیشرفته UFU</h1>
-      <p style="color: #666; margin-top: 5px;">مدیریت کامل سایت فروشگاهی</p>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>🎨 پنل مدیریت پیشرفته UFU</h1>
+            <p style="color: #666; margin-top: 5px;">مدیریت کامل سایت فروشگاهی</p>
+        </div>
+
+        <div class="alert alert-success" id="successAlert"></div>
+        <div class="alert alert-info" id="infoAlert"></div>
+
+        <div class="admin-tabs">
+            <button class="tab-btn active" onclick="switchTab('dashboard')">📊 داشبورد</button>
+            <button class="tab-btn" onclick="switchTab('products')">🛍️ مدیریت محصولات</button>
+            <button class="tab-btn" onclick="switchTab('appearance')">🎨 ظاهر سایت</button>
+            <button class="tab-btn" onclick="switchTab('content')">📝 محتوا</button>
+            <button class="tab-btn" onclick="switchTab('export')">💾 خروجی</button>
+        </div>
+
+        <!-- داشبورد -->
+        <div id="dashboard" class="admin-panel active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 id="totalProducts">0</h3>
+                    <p>محصولات</p>
+                </div>
+                <div class="stat-card">
+                    <h3>4</h3>
+                    <p>کالکشن‌ها</p>
+                </div>
+                <div class="stat-card">
+                    <h3>100%</h3>
+                    <p>وضعیت سایت</p>
+                </div>
+            </div>
+            <div class="form-section">
+                <h2>👋 خوش آمدید</h2>
+                <p style="color: #666; line-height: 1.8;">
+                    از این پنل می‌توانید:<br>
+                    ✅ محصولات را اضافه، ویرایش و حذف کنید<br>
+                    ✅ رنگ‌بندی و لوگو سایت را تغییر دهید<br>
+                    ✅ متن‌ها و محتوای سایت را ویرایش کنید<br>
+                    ✅ در نهایت خروجی HTML بگیرید و در سایت اصلی استفاده کنید
+                </p>
+            </div>
+        </div>
+
+        <!-- مدیریت محصولات -->
+        <div id="products" class="admin-panel">
+            <div class="form-section">
+                <h2>➕ افزودن محصول جدید</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>نام محصول:</label>
+                        <input type="text" id="prodName" placeholder="مثلاً: تیشرت UFU">
+                    </div>
+                    <div class="form-group">
+                        <label>قیمت (تومان):</label>
+                        <input type="text" id="prodPrice" placeholder="مثلاً: ۴۹۹,۰۰۰">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>دسته‌بندی:</label>
+                        <select id="prodCategory">
+                            <option value="تیشرت">تیشرت</option>
+                            <option value="هودی">هودی</option>
+                            <option value="کلاه">کلاه</option>
+                            <option value="شلوار">شلوار</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>برچسب:</label>
+                        <select id="prodBadge">
+                            <option value="">هیچ</option>
+                            <option value="new">جدید</option>
+                            <option value="sale">حراج</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>لینک تصویر (از ibb.co):</label>
+                    <input type="text" id="prodImage" placeholder="https://i.ibb.co/...">
+                    <small style="color: #666; display: block; margin-top: 5px;">
+                        📸 عکس را در <a href="https://ibb.co" target="_blank" style="color: #667eea;">ibb.co</a> آپلود
+                        کنید و لینک مستقیم را اینجا بگذارید
+                    </small>
+                </div>
+                <button class="btn btn-primary" onclick="addProduct()">➕ افزودن محصول</button>
+            </div>
+
+            <div class="form-section">
+                <h2>📦 لیست محصولات</h2>
+                <div id="productList" class="product-list"></div>
+            </div>
+        </div>
+
+        <!-- ظاهر سایت -->
+        <div id="appearance" class="admin-panel">
+            <div class="form-section">
+                <h2>🎨 تنظیمات ظاهری</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>لوگو سایت:</label>
+                        <input type="text" id="siteLogo" placeholder="لینک لوگو">
+                    </div>
+                    <div class="form-group">
+                        <label>عنوان سایت:</label>
+                        <input type="text" id="siteTitle" placeholder="UFU | جامه، روایت توست">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>رنگ اصلی:</label>
+                        <input type="color" id="primaryColor" class="color-picker" value="#8B0000">
+                    </div>
+                    <div class="form-group">
+                        <label>رنگ ثانویه:</label>
+                        <input type="color" id="secondaryColor" class="color-picker" value="#6B0000">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="saveAppearance()">💾 ذخیره تغییرات</button>
+            </div>
+        </div>
+
+        <!-- محتوا -->
+        <div id="content" class="admin-panel">
+            <div class="form-section">
+                <h2>📝 ویرایش محتوا</h2>
+                <div class="form-group">
+                    <label>متن بنر اصلی:</label>
+                    <textarea id="bannerText" placeholder="جامه بر تن شکوه در جان نقش فرهنگ و قامت انسان"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>عنوان بخش محصولات منتخب:</label>
+                    <input type="text" id="productsTitle" placeholder="محصولات منتخب">
+                </div>
+                <div class="form-group">
+                    <label>فوتر سایت:</label>
+                    <textarea id="footerText" placeholder="UFU © تمامی حقوق محفوظ است"></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="saveContent()">💾 ذخیره محتوا</button>
+            </div>
+        </div>
+
+        <!-- خروجی -->
+        <div id="export" class="admin-panel">
+            <div class="form-section">
+                <h2>💾 دریافت خروجی</h2>
+                <p style="color: #666; margin-bottom: 20px;">
+                    بعد از انجام تغییرات، روی دکمه زیر کلیک کنید تا کد HTML نهایی را دریافت کنید
+                </p>
+                <button class="btn btn-success" onclick="generateFinalCode()">🔧 تولید کد نهایی</button>
+                <div id="finalCodeOutput" style="margin-top: 20px;"></div>
+            </div>
+        </div>
     </div>
 
-    <div class="alert alert-success" id="successAlert"></div>
-    <div class="alert alert-info" id="infoAlert"></div>
+    <script>
+        let products = [];
+        let siteConfig = {
+            logo: 'https://i.ibb.co/kVLwhRNv/file-000000006d5871f48d0afbb7bedef96c.png',
+            title: 'UFU | جامه، روایت توست',
+            primaryColor: '#8B0000',
+            secondaryColor: '#6B0000',
+            bannerText: 'جامه بر تن شکوه در جان نقش فرهنگ و قامت انسان',
+            productsTitle: 'محصولات منتخب',
+            footerText: 'UFU © تمامی حقوق محفوظ است'
+        };
 
-    <div class="admin-tabs">
-      <button class="tab-btn active" onclick="switchTab('dashboard')">📊 داشبورد</button>
-      <button class="tab-btn" onclick="switchTab('products')">🛍️ مدیریت محصولات</button>
-      <button class="tab-btn" onclick="switchTab('appearance')">🎨 ظاهر سایت</button>
-      <button class="tab-btn" onclick="switchTab('content')">📝 محتوا</button>
-      <button class="tab-btn" onclick="switchTab('export')">💾 خروجی</button>
-    </div>
+        function switchTab(tabName) {
+            document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
 
-    <!-- داشبورد -->
-    <div id="dashboard" class="admin-panel active">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <h3 id="totalProducts">0</h3>
-          <p>محصولات</p>
-        </div>
-        <div class="stat-card">
-          <h3>4</h3>
-          <p>کالکشن‌ها</p>
-        </div>
-        <div class="stat-card">
-          <h3>100%</h3>
-          <p>وضعیت سایت</p>
-        </div>
-      </div>
-      <div class="form-section">
-        <h2>👋 خوش آمدید</h2>
-        <p style="color: #666; line-height: 1.8;">
-          از این پنل می‌توانید:<br>
-          ✅ محصولات را اضافه، ویرایش و حذف کنید<br>
-          ✅ رنگ‌بندی و لوگو سایت را تغییر دهید<br>
-          ✅ متن‌ها و محتوای سایت را ویرایش کنید<br>
-          ✅ در نهایت خروجی HTML بگیرید و در سایت اصلی استفاده کنید
-        </p>
-      </div>
-    </div>
+            if (tabName === 'products') renderProductList();
+            if (tabName === 'dashboard') updateStats();
+        }
 
-    <!-- مدیریت محصولات -->
-    <div id="products" class="admin-panel">
-      <div class="form-section">
-        <h2>➕ افزودن محصول جدید</h2>
-        <div class="form-row">
-          <div class="form-group">
-            <label>نام محصول:</label>
-            <input type="text" id="prodName" placeholder="مثلاً: تیشرت UFU">
-          </div>
-          <div class="form-group">
-            <label>قیمت (تومان):</label>
-            <input type="text" id="prodPrice" placeholder="مثلاً: ۴۹۹,۰۰۰">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>دسته‌بندی:</label>
-            <select id="prodCategory">
-              <option value="تیشرت">تیشرت</option>
-              <option value="هودی">هودی</option>
-              <option value="کلاه">کلاه</option>
-              <option value="شلوار">شلوار</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>برچسب:</label>
-            <select id="prodBadge">
-              <option value="">هیچ</option>
-              <option value="new">جدید</option>
-              <option value="sale">حراج</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>لینک تصویر (از ibb.co):</label>
-          <input type="text" id="prodImage" placeholder="https://i.ibb.co/...">
-          <small style="color: #666; display: block; margin-top: 5px;">
-            📸 عکس را در <a href="https://ibb.co" target="_blank" style="color: #667eea;">ibb.co</a> آپلود کنید و لینک مستقیم را اینجا بگذارید
-          </small>
-        </div>
-        <button class="btn btn-primary" onclick="addProduct()">➕ افزودن محصول</button>
-      </div>
+        function showAlert(message, type = 'success') {
+            const alert = document.getElementById(type + 'Alert');
+            alert.textContent = message;
+            alert.style.display = 'block';
+            setTimeout(() => alert.style.display = 'none', 3000);
+        }
 
-      <div class="form-section">
-        <h2>📦 لیست محصولات</h2>
-        <div id="productList" class="product-list"></div>
-      </div>
-    </div>
+        function addProduct() {
+            const name = document.getElementById('prodName').value;
+            const price = document.getElementById('prodPrice').value;
+            const category = document.getElementById('prodCategory').value;
+            const badge = document.getElementById('prodBadge').value;
+            const image = document.getElementById('prodImage').value;
 
-    <!-- ظاهر سایت -->
-    <div id="appearance" class="admin-panel">
-      <div class="form-section">
-        <h2>🎨 تنظیمات ظاهری</h2>
-        <div class="form-row">
-          <div class="form-group">
-            <label>لوگو سایت:</label>
-            <input type="text" id="siteLogo" placeholder="لینک لوگو">
-          </div>
-          <div class="form-group">
-            <label>عنوان سایت:</label>
-            <input type="text" id="siteTitle" placeholder="UFU | جامه، روایت توست">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>رنگ اصلی:</label>
-            <input type="color" id="primaryColor" class="color-picker" value="#8B0000">
-          </div>
-          <div class="form-group">
-            <label>رنگ ثانویه:</label>
-            <input type="color" id="secondaryColor" class="color-picker" value="#6B0000">
-          </div>
-        </div>
-        <button class="btn btn-primary" onclick="saveAppearance()">💾 ذخیره تغییرات</button>
-      </div>
-    </div>
+            if (!name || !price || !image) {
+                alert('لطفاً همه فیلدها را پر کنید!');
+                return;
+            }
 
-    <!-- محتوا -->
-    <div id="content" class="admin-panel">
-      <div class="form-section">
-        <h2>📝 ویرایش محتوا</h2>
-        <div class="form-group">
-          <label>متن بنر اصلی:</label>
-          <textarea id="bannerText" placeholder="جامه بر تن شکوه در جان نقش فرهنگ و قامت انسان"></textarea>
-        </div>
-        <div class="form-group">
-          <label>عنوان بخش محصولات منتخب:</label>
-          <input type="text" id="productsTitle" placeholder="محصولات منتخب">
-        </div>
-        <div class="form-group">
-          <label>فوتر سایت:</label>
-          <textarea id="footerText" placeholder="UFU © تمامی حقوق محفوظ است"></textarea>
-        </div>
-        <button class="btn btn-primary" onclick="saveContent()">💾 ذخیره محتوا</button>
-      </div>
-    </div>
+            products.push({
+                id: Date.now(),
+                name,
+                price,
+                category,
+                badge,
+                image
+            });
 
-    <!-- خروجی -->
-    <div id="export" class="admin-panel">
-      <div class="form-section">
-        <h2>💾 دریافت خروجی</h2>
-        <p style="color: #666; margin-bottom: 20px;">
-          بعد از انجام تغییرات، روی دکمه زیر کلیک کنید تا کد HTML نهایی را دریافت کنید
-        </p>
-        <button class="btn btn-success" onclick="generateFinalCode()">🔧 تولید کد نهایی</button>
-        <div id="finalCodeOutput" style="margin-top: 20px;"></div>
-      </div>
-    </div>
-  </div>
+            showAlert('✅ محصول با موفقیت اضافه شد!');
 
-  <script>
-    let products = [];
-    let siteConfig = {
-      logo: 'https://i.ibb.co/kVLwhRNv/file-000000006d5871f48d0afbb7bedef96c.png',
-      title: 'UFU | جامه، روایت توست',
-      primaryColor: '#8B0000',
-      secondaryColor: '#6B0000',
-      bannerText: 'جامه بر تن شکوه در جان نقش فرهنگ و قامت انسان',
-      productsTitle: 'محصولات منتخب',
-      footerText: 'UFU © تمامی حقوق محفوظ است'
-    };
+            // Clear inputs
+            document.getElementById('prodName').value = '';
+            document.getElementById('prodPrice').value = '';
+            document.getElementById('prodImage').value = '';
 
-    function switchTab(tabName) {
-      document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(tabName).classList.add('active');
-      event.target.classList.add('active');
-      
-      if (tabName === 'products') renderProductList();
-      if (tabName === 'dashboard') updateStats();
-    }
+            renderProductList();
+        }
 
-    function showAlert(message, type = 'success') {
-      const alert = document.getElementById(type + 'Alert');
-      alert.textContent = message;
-      alert.style.display = 'block';
-      setTimeout(() => alert.style.display = 'none', 3000);
-    }
+        function renderProductList() {
+            const container = document.getElementById('productList');
+            if (products.length === 0) {
+                container.innerHTML = '<p style="color: #666; text-align: center;">هنوز محصولی اضافه نشده است</p>';
+                return;
+            }
 
-    function addProduct() {
-      const name = document.getElementById('prodName').value;
-      const price = document.getElementById('prodPrice').value;
-      const category = document.getElementById('prodCategory').value;
-      const badge = document.getElementById('prodBadge').value;
-      const image = document.getElementById('prodImage').value;
-
-      if (!name || !price || !image) {
-        alert('لطفاً همه فیلدها را پر کنید!');
-        return;
-      }
-
-      products.push({
-        id: Date.now(),
-        name,
-        price,
-        category,
-        badge,
-        image
-      });
-
-      showAlert('✅ محصول با موفقیت اضافه شد!');
-      
-      // Clear inputs
-      document.getElementById('prodName').value = '';
-      document.getElementById('prodPrice').value = '';
-      document.getElementById('prodImage').value = '';
-      
-      renderProductList();
-    }
-
-    function renderProductList() {
-      const container = document.getElementById('productList');
-      if (products.length === 0) {
-        container.innerHTML = '<p style="color: #666; text-align: center;">هنوز محصولی اضافه نشده است</p>';
-        return;
-      }
-
-      container.innerHTML = products.map(prod => `
+            container.innerHTML = products.map(prod => `
         <div class="product-item">
           <img src="${prod.image}" alt="${prod.name}">
           <div class="product-item-info">
@@ -325,56 +728,56 @@
           </div>
         </div>
       `).join('');
-    }
+        }
 
-    function deleteProduct(id) {
-      if (confirm('آیا مطمئن هستید؟')) {
-        products = products.filter(p => p.id !== id);
-        renderProductList();
-        showAlert('✅ محصول حذف شد!');
-      }
-    }
+        function deleteProduct(id) {
+            if (confirm('آیا مطمئن هستید؟')) {
+                products = products.filter(p => p.id !== id);
+                renderProductList();
+                showAlert('✅ محصول حذف شد!');
+            }
+        }
 
-    function editProduct(id) {
-      const prod = products.find(p => p.id === id);
-      if (prod) {
-        document.getElementById('prodName').value = prod.name;
-        document.getElementById('prodPrice').value = prod.price;
-        document.getElementById('prodCategory').value = prod.category;
-        document.getElementById('prodBadge').value = prod.badge;
-        document.getElementById('prodImage').value = prod.image;
-        deleteProduct(id);
-        showAlert('️ محصول برای ویرایش آماده شد. بعد از تغییرات، دوباره افزودن را بزنید.');
-      }
-    }
+        function editProduct(id) {
+            const prod = products.find(p => p.id === id);
+            if (prod) {
+                document.getElementById('prodName').value = prod.name;
+                document.getElementById('prodPrice').value = prod.price;
+                document.getElementById('prodCategory').value = prod.category;
+                document.getElementById('prodBadge').value = prod.badge;
+                document.getElementById('prodImage').value = prod.image;
+                deleteProduct(id);
+                showAlert('️ محصول برای ویرایش آماده شد. بعد از تغییرات، دوباره افزودن را بزنید.');
+            }
+        }
 
-    function saveAppearance() {
-      siteConfig.logo = document.getElementById('siteLogo').value || siteConfig.logo;
-      siteConfig.title = document.getElementById('siteTitle').value || siteConfig.title;
-      siteConfig.primaryColor = document.getElementById('primaryColor').value;
-      siteConfig.secondaryColor = document.getElementById('secondaryColor').value;
-      showAlert('✅ تنظیمات ظاهر ذخیره شد!');
-    }
+        function saveAppearance() {
+            siteConfig.logo = document.getElementById('siteLogo').value || siteConfig.logo;
+            siteConfig.title = document.getElementById('siteTitle').value || siteConfig.title;
+            siteConfig.primaryColor = document.getElementById('primaryColor').value;
+            siteConfig.secondaryColor = document.getElementById('secondaryColor').value;
+            showAlert('✅ تنظیمات ظاهر ذخیره شد!');
+        }
 
-    function saveContent() {
-      siteConfig.bannerText = document.getElementById('bannerText').value || siteConfig.bannerText;
-      siteConfig.productsTitle = document.getElementById('productsTitle').value || siteConfig.productsTitle;
-      siteConfig.footerText = document.getElementById('footerText').value || siteConfig.footerText;
-      showAlert('✅ محتوا ذخیره شد!');
-    }
+        function saveContent() {
+            siteConfig.bannerText = document.getElementById('bannerText').value || siteConfig.bannerText;
+            siteConfig.productsTitle = document.getElementById('productsTitle').value || siteConfig.productsTitle;
+            siteConfig.footerText = document.getElementById('footerText').value || siteConfig.footerText;
+            showAlert('✅ محتوا ذخیره شد!');
+        }
 
-    function generateFinalCode() {
-      const code = generateHTML();
-      document.getElementById('finalCodeOutput').innerHTML = `
+        function generateFinalCode() {
+            const code = generateHTML();
+            document.getElementById('finalCodeOutput').innerHTML = `
         <h3 style="margin-bottom: 15px; color: #333;">📄 کد HTML نهایی:</h3>
         <div class="code-output">${escapeHtml(code)}</div>
         <button class="btn btn-success" onclick="copyFinalCode()" style="margin-top: 15px;">📋 کپی کد</button>
       `;
-      showAlert('✅ کد تولید شد! حالا می‌توانید کپی کنید.');
-    }
+            showAlert('✅ کد تولید شد! حالا می‌توانید کپی کنید.');
+        }
 
-    function generateHTML() {
-      let productsHTML = products.map(prod => `
+        function generateHTML() {
+            let productsHTML = products.map(prod => `
         <div class="product-card">
           ${prod.badge ? `<span class="badge badge-${prod.badge}">${prod.badge === 'new' ? 'NEW' : 'SALE'}</span>` : ''}
           <img src="${prod.image}" alt="${prod.name}">
@@ -384,7 +787,7 @@
         </div>
       `).join('');
 
-      return `<!DOCTYPE html>
+            return `<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
@@ -402,116 +805,119 @@
   <!-- محتوای سایت با تنظیمات جدید -->
 </body>
 </html>`;
-    }
+        }
 
-    function copyFinalCode() {
-      const code = generateHTML();
-      navigator.clipboard.writeText(code).then(() => {
-        showAlert('✅ کد کپی شد! حالا در index.html Paste کنید.');
-      });
-    }
+        function copyFinalCode() {
+            const code = generateHTML();
+            navigator.clipboard.writeText(code).then(() => {
+                showAlert('✅ کد کپی شد! حالا در index.html Paste کنید.');
+            });
+        }
 
-    function updateStats() {
-      document.getElementById('totalProducts').textContent = products.length;
-    }
+        function updateStats() {
+            document.getElementById('totalProducts').textContent = products.length;
+        }
 
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
 
-    // Initialize
-    renderProductList();
-  </script>
+        // Initialize
+        renderProductList();
+    </script>
 </body>
-</html>
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>🛍️ پنل مدیریت UFU</h1>
-    
-    <div class="form-group">
-      <label>نام محصول:</label>
-      <input type="text" id="productName" placeholder="مثلاً: تیشرت UFU">
-    </div>
-    
-    <div class="form-group">
-      <label>قیمت (تومان):</label>
-      <input type="text" id="productPrice" placeholder="مثلاً: ۴۹۹,۰۰">
-    </div>
-    
-    <div class="form-group">
-      <label>دسته‌بندی:</label>
-      <select id="productCategory">
-        <option value="تیشرت">تیشرت</option>
-        <option value="هودی">هودی</option>
-        <option value="کلاه">کلاه</option>
-        <option value="شلوار">شلوار</option>
-      </select>
-    </div>
-    
-    <div class="form-group">
-      <label>لینک عکس (از ibb.co):</label>
-      <input type="text" id="productImage" placeholder="https://i.ibb.co/...">
-      <small style="color: #666; display: block; margin-top: 5px;">
-        عکس را در <a href="https://ibb.co" target="_blank">ibb.co</a> آپلود کن و لینک مستقیم را اینجا بگذار
-      </small>
-    </div>
-    
-    <button onclick="generateCode()"> تولید کد محصول</button>
-    
-    <div class="output" id="outputSection" style="display: none;">
-      <h3>✅ کد HTML محصول:</h3>
-      <div class="code-box" id="codeOutput"></div>
-      <button class="copy-btn" onclick="copyCode()">📋 کپی کد</button>
-      
-      <h3 style="margin-top: 20px;">️ پیش‌نمایش:</h3>
-      <div class="preview" id="previewOutput"></div>
-    </div>
-  </div>
 
-  <script>
-    function generateCode() {
-      const name = document.getElementById('productName').value;
-      const price = document.getElementById('productPrice').value;
-      const category = document.getElementById('productCategory').value;
-      const image = document.getElementById('productImage').value;
-      
-      if (!name || !price || !image) {
-        alert('لطفاً همه فیلدها را پر کن!');
-        return;
-      }
-      
-      const code = `
+</html>
+</style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🛍️ پنل مدیریت UFU</h1>
+
+        <div class="form-group">
+            <label>نام محصول:</label>
+            <input type="text" id="productName" placeholder="مثلاً: تیشرت UFU">
+        </div>
+
+        <div class="form-group">
+            <label>قیمت (تومان):</label>
+            <input type="text" id="productPrice" placeholder="مثلاً: ۴۹۹,۰۰">
+        </div>
+
+        <div class="form-group">
+            <label>دسته‌بندی:</label>
+            <select id="productCategory">
+                <option value="تیشرت">تیشرت</option>
+                <option value="هودی">هودی</option>
+                <option value="کلاه">کلاه</option>
+                <option value="شلوار">شلوار</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>لینک عکس (از ibb.co):</label>
+            <input type="text" id="productImage" placeholder="https://i.ibb.co/...">
+            <small style="color: #666; display: block; margin-top: 5px;">
+                عکس را در <a href="https://ibb.co" target="_blank">ibb.co</a> آپلود کن و لینک مستقیم را اینجا بگذار
+            </small>
+        </div>
+
+        <button onclick="generateCode()"> تولید کد محصول</button>
+
+        <div class="output" id="outputSection" style="display: none;">
+            <h3>✅ کد HTML محصول:</h3>
+            <div class="code-box" id="codeOutput"></div>
+            <button class="copy-btn" onclick="copyCode()">📋 کپی کد</button>
+
+            <h3 style="margin-top: 20px;">️ پیش‌نمایش:</h3>
+            <div class="preview" id="previewOutput"></div>
+        </div>
+    </div>
+
+    <script>
+        function generateCode() {
+            const name = document.getElementById('productName').value;
+            const price = document.getElementById('productPrice').value;
+            const category = document.getElementById('productCategory').value;
+            const image = document.getElementById('productImage').value;
+
+            if (!name || !price || !image) {
+                alert('لطفاً همه فیلدها را پر کن!');
+                return;
+            }
+
+            const code = `
 <div class="product-card">
   <img src="${image}" alt="${name}">
   <h4>${name}</h4>
   <p>${price} تومان</p>
   <button class="add-to-cart">+</button>
 </div>`;
-      
-      document.getElementById('codeOutput').textContent = code.trim();
-      document.getElementById('outputSection').style.display = 'block';
-      
-      // Preview
-      document.getElementById('previewOutput').innerHTML = `
+
+            document.getElementById('codeOutput').textContent = code.trim();
+            document.getElementById('outputSection').style.display = 'block';
+
+            // Preview
+            document.getElementById('previewOutput').innerHTML = `
         <div class="product-preview">
           <img src="${image}" alt="${name}">
           <h4>${name}</h4>
           <p>${price} تومان</p>
         </div>
       `;
-    }
-    
-    function copyCode() {
-      const code = document.getElementById('codeOutput').textContent;
-      navigator.clipboard.writeText(code).then(() => {
-        alert('✅ کد کپی شد! حالا در index.html بگذار.');
-      });
-    }
-    
-  </script>
+        }
+
+        function copyCode() {
+            const code = document.getElementById('codeOutput').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('✅ کد کپی شد! حالا در index.html بگذار.');
+            });
+        }
+
+    </script>
 </body>
+
 </html>
